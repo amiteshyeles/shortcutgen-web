@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intentional - iOS Shortcut Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧘</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🧘 Intentional</h1>
+            <p class="subtitle">Generate Your Mindful App Shortcut</p>
+        </header>
+
+        <main class="main">
+            <!-- Loading State -->
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Generating your shortcut...</p>
+            </div>
+
+            <!-- Shortcut Configuration -->
+            <div id="config" class="config-section">
+                <div class="app-info">
+                    <div class="app-icon">
+                        <div id="appIcon" class="icon-placeholder">📱</div>
+                    </div>
+                    <div class="app-details">
+                        <h2 id="appName">App</h2>
+                        <p id="appDescription">Block this app with mindful reflection</p>
+                    </div>
+                </div>
+
+                <div class="settings">
+                    <div class="setting-item">
+                        <label for="waitTime">Reflection Time:</label>
+                        <select id="waitTime">
+                            <option value="30">30 seconds</option>
+                            <option value="60" selected>1 minute</option>
+                            <option value="90">1.5 minutes</option>
+                            <option value="120">2 minutes</option>
+                            <option value="180">3 minutes</option>
+                            <option value="300">5 minutes</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="reflectionType">Reflection Style:</label>
+                        <select id="reflectionType">
+                            <option value="mindfulness">Mindfulness Questions</option>
+                            <option value="productivity">Productivity Focus</option>
+                            <option value="gratitude">Gratitude Practice</option>
+                            <option value="default">General Reflection</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="generateBtn" class="generate-btn">
+                    📲 Generate Shortcut
+                </button>
+            </div>
+
+            <!-- Download Section -->
+            <div id="download" class="download-section" style="display: none;">
+                <div class="success-icon">✅</div>
+                <h2>Your Shortcut is Ready!</h2>
+                <p class="download-description">
+                    This shortcut will redirect <strong id="downloadAppName"></strong> through the Intentional app for mindful reflection.
+                </p>
+
+                <div class="download-buttons">
+                    <a id="downloadLink" class="download-btn primary" href="#" download>
+                        📥 Download Shortcut
+                    </a>
+                    <button id="copyLink" class="download-btn secondary">
+                        📋 Copy Install Link
+                    </button>
+                </div>
+
+                <div class="instructions">
+                    <h3>📋 Setup Instructions</h3>
+                    <ol>
+                        <li><strong>Download</strong> the shortcut file above</li>
+                        <li><strong>Open</strong> the file (it will open in iOS Shortcuts app)</li>
+                        <li><strong>Tap "Add Shortcut"</strong> to install it</li>
+                        <li><strong>Add to Home Screen:</strong>
+                            <ul>
+                                <li>Find the shortcut in Shortcuts app</li>
+                                <li>Tap the ⋯ (three dots) menu</li>
+                                <li>Select "Add to Home Screen"</li>
+                                <li>Customize the icon and name</li>
+                            </ul>
+                        </li>
+                        <li><strong>Replace the original app</strong> by moving it to a folder or hiding it</li>
+                    </ol>
+                </div>
+
+                <div class="tips">
+                    <h3>💡 Pro Tips</h3>
+                    <ul>
+                        <li><strong>Icon:</strong> Use the same icon as the original app for seamless replacement</li>
+                        <li><strong>Name:</strong> Use the original app name (e.g., "Instagram")</li>
+                        <li><strong>Placement:</strong> Put it in the same location as the original app</li>
+                        <li><strong>Original app:</strong> Move to a hidden folder or second screen</li>
+                    </ul>
+                </div>
+
+                <button id="createAnother" class="create-another-btn">
+                    🔄 Create Another Shortcut
+                </button>
+            </div>
+
+            <!-- Error Section -->
+            <div id="error" class="error-section" style="display: none;">
+                <div class="error-icon">❌</div>
+                <h2>Oops! Something went wrong</h2>
+                <p id="errorMessage">Unable to generate shortcut. Please try again.</p>
+                <button id="retryBtn" class="retry-btn">🔄 Try Again</button>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Made with ❤️ for mindful technology use</p>
+            <p><a href="https://github.com/yourusername/intentional" target="_blank">Open Source</a> • <a href="mailto:your@email.com">Contact</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
