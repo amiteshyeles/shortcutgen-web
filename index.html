@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intentional - iOS Shortcut Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧘</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🧘 Intentional</h1>
+            <p class="subtitle">Generate Your Mindful App Shortcut</p>
+        </header>
+
+        <main class="main">
+            <!-- Loading State -->
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Generating your shortcut...</p>
+            </div>
+
+            <!-- Shortcut Configuration -->
+            <div id="config" class="config-section">
+                <div class="app-info">
+                    <div class="app-icon">
+                        <div id="appIcon" class="icon-placeholder">📱</div>
+                    </div>
+                    <div class="app-details">
+                        <h2 id="appName">App</h2>
+                        <p id="appDescription">Block this app with mindful reflection</p>
+                    </div>
+                </div>
+
+                <div class="settings">
+                    <div class="setting-item">
+                        <label for="waitTime">Reflection Time:</label>
+                        <select id="waitTime">
+                            <option value="30">30 seconds</option>
+                            <option value="60" selected>1 minute</option>
+                            <option value="90">1.5 minutes</option>
+                            <option value="120">2 minutes</option>
+                            <option value="180">3 minutes</option>
+                            <option value="300">5 minutes</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="reflectionType">Reflection Style:</label>
+                        <select id="reflectionType">
+                            <option value="mindfulness">Mindfulness Questions</option>
+                            <option value="productivity">Productivity Focus</option>
+                            <option value="gratitude">Gratitude Practice</option>
+                            <option value="default">General Reflection</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="generateBtn" class="generate-btn">
+                    📲 Generate Shortcut
+                </button>
+            </div>
+
+            <!-- Download Section -->
+            <div id="download" class="download-section" style="display: none;">
+                <div class="success-icon">✅</div>
+                <h2>Your Shortcut is Ready!</h2>
+                <p class="download-description">
+                    <strong id="downloadAppName"></strong> shortcut is ready to be created manually. 
+                    <br><small style="color: #666; margin-top: 8px; display: block;">
+                        ⚠️ <strong>iOS 15+ Signing Issue:</strong> Apple blocks unsigned shortcuts, so manual creation is required.
+                    </small>
+                </p>
+
+                <div class="download-buttons">
+                    <a id="downloadLink" class="download-btn primary" href="#manual-creation">
+                        📋 Create Manually (Recommended)
+                    </a>
+                    <button id="copyLink" class="download-btn secondary">
+                        📋 Copy Deep Link
+                    </button>
+                </div>
+
+                <div class="instructions">
+                    <h3>📋 Setup Instructions</h3>
+                    <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                        <h4 style="margin: 0 0 8px 0; color: #0369a1;">📖 Why Manual Creation?</h4>
+                        <p style="margin: 0; font-size: 0.9em; color: #075985;">
+                            iOS 15+ requires all shortcuts to be <strong>digitally signed</strong> by Apple or an enterprise certificate. 
+                            Since we can't sign shortcuts without Apple's infrastructure, manual creation is the most reliable method.
+                        </p>
+                    </div>
+                    
+                    <ol>
+                        <li><strong>Copy the deep link</strong> by tapping the button above</li>
+                        <li><strong>Create the shortcut</strong> following the steps below</li>
+                        <li><strong>Add to your home screen</strong> to replace the original app</li>
+                    </ol>
+
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-top: 16px;">
+                        <h4 style="margin: 0 0 12px 0; color: #334155;">🔧 Alternative Solutions (Advanced)</h4>
+                        <ul style="font-size: 0.9em; color: #64748b; margin: 0;">
+                            <li><strong>Enterprise Certificates:</strong> Cost $3000+, often get revoked quickly</li>
+                            <li><strong>Signing Services:</strong> Use leaked certificates, risky and unreliable</li>
+                            <li><strong>Jailbreak:</strong> Install AppSync to bypass signing (requires jailbroken device)</li>
+                            <li><strong>Sideloading Tools:</strong> AltStore, Sideloadly (7-day limits, requires computer)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <h3>💡 Pro Tips</h3>
+                    <ul>
+                        <li><strong>Icon:</strong> Use the same icon as the original app for seamless replacement</li>
+                        <li><strong>Name:</strong> Use the original app name (e.g., "Instagram")</li>
+                        <li><strong>Placement:</strong> Put it in the same location as the original app</li>
+                        <li><strong>Original app:</strong> Move to a hidden folder or second screen</li>
+                    </ul>
+                </div>
+
+                <button id="createAnother" class="create-another-btn">
+                    🔄 Create Another Shortcut
+                </button>
+            </div>
+
+            <!-- Error Section -->
+            <div id="error" class="error-section" style="display: none;">
+                <div class="error-icon">❌</div>
+                <h2>Oops! Something went wrong</h2>
+                <p id="errorMessage">Unable to generate shortcut. Please try again.</p>
+                <button id="retryBtn" class="retry-btn">🔄 Try Again</button>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Made with ❤️ for mindful technology use</p>
+            <p><a href="https://github.com/yourusername/intentional" target="_blank">Open Source</a> • <a href="mailto:your@email.com">Contact</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
