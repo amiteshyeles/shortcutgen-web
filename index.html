@@ -67,12 +67,15 @@
                 <div class="success-icon">✅</div>
                 <h2>Your Shortcut is Ready!</h2>
                 <p class="download-description">
-                    Download a real iOS shortcut file that will redirect <strong id="downloadAppName"></strong> through the Intentional app for mindful reflection.
+                    <strong id="downloadAppName"></strong> shortcut is ready to be created manually. 
+                    <br><small style="color: #666; margin-top: 8px; display: block;">
+                        ⚠️ <strong>iOS 15+ Signing Issue:</strong> Apple blocks unsigned shortcuts, so manual creation is required.
+                    </small>
                 </p>
 
                 <div class="download-buttons">
-                    <a id="downloadLink" class="download-btn primary" href="#" download>
-                        📥 Download .shortcut File
+                    <a id="downloadLink" class="download-btn primary" href="#manual-creation">
+                        📋 Create Manually (Recommended)
                     </a>
                     <button id="copyLink" class="download-btn secondary">
                         📋 Copy Deep Link
@@ -81,20 +84,29 @@
 
                 <div class="instructions">
                     <h3>📋 Setup Instructions</h3>
+                    <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                        <h4 style="margin: 0 0 8px 0; color: #0369a1;">📖 Why Manual Creation?</h4>
+                        <p style="margin: 0; font-size: 0.9em; color: #075985;">
+                            iOS 15+ requires all shortcuts to be <strong>digitally signed</strong> by Apple or an enterprise certificate. 
+                            Since we can't sign shortcuts without Apple's infrastructure, manual creation is the most reliable method.
+                        </p>
+                    </div>
+                    
                     <ol>
-                        <li><strong>Download</strong> the .shortcut file above</li>
-                        <li><strong>Open</strong> the file (automatically opens iOS Shortcuts app)</li>
-                        <li><strong>Tap "Add Shortcut"</strong> to install it</li>
-                        <li><strong>Add to Home Screen:</strong>
-                            <ul>
-                                <li>Find the shortcut in Shortcuts app</li>
-                                <li>Tap the ⋯ (three dots) menu</li>
-                                <li>Select "Add to Home Screen"</li>
-                                <li>Customize the icon and name</li>
-                            </ul>
-                        </li>
-                        <li><strong>Replace the original app</strong> by moving it to a folder or hiding it</li>
+                        <li><strong>Copy the deep link</strong> by tapping the button above</li>
+                        <li><strong>Create the shortcut</strong> following the steps below</li>
+                        <li><strong>Add to your home screen</strong> to replace the original app</li>
                     </ol>
+
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-top: 16px;">
+                        <h4 style="margin: 0 0 12px 0; color: #334155;">🔧 Alternative Solutions (Advanced)</h4>
+                        <ul style="font-size: 0.9em; color: #64748b; margin: 0;">
+                            <li><strong>Enterprise Certificates:</strong> Cost $3000+, often get revoked quickly</li>
+                            <li><strong>Signing Services:</strong> Use leaked certificates, risky and unreliable</li>
+                            <li><strong>Jailbreak:</strong> Install AppSync to bypass signing (requires jailbroken device)</li>
+                            <li><strong>Sideloading Tools:</strong> AltStore, Sideloadly (7-day limits, requires computer)</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="tips">

@@ -227,30 +227,109 @@ async function generateShortcut() {
         // Simulate generation time for better UX
         await new Promise(resolve => setTimeout(resolve, 1500));
         
-        // Create downloadable plist
+        // Create downloadable plist file for reference
         const plistData = createShortcutPlist();
-        
-        // Create downloadable .shortcut file
         const blob = new Blob([plistData], { type: 'application/octet-stream' });
         const downloadUrl = URL.createObjectURL(blob);
         const filename = `Mindful-${currentAppConfig.name.replace(/\s+/g, '-')}.shortcut`;
         
-        // Update download section
+        // Update download section with manual method (primary)
         elements.downloadAppName.textContent = currentAppConfig.name;
-        elements.downloadLink.href = downloadUrl;
-        elements.downloadLink.download = filename;
-        elements.downloadLink.textContent = '📥 Download .shortcut File';
+        elements.downloadLink.href = '#manual-creation';
+        elements.downloadLink.removeAttribute('download');
+        elements.downloadLink.textContent = '📋 Create Manually (Recommended)';
+        elements.downloadLink.onclick = (e) => {
+            e.preventDefault();
+            copyDeepLinkAndShowInstructions();
+        };
+        
+        // Add reference download option
+        const downloadSection = document.querySelector('.download-buttons');
+        let referenceBtn = document.getElementById('referenceDownload');
+        if (!referenceBtn) {
+            referenceBtn = document.createElement('a');
+            referenceBtn.id = 'referenceDownload';
+            referenceBtn.className = 'download-btn secondary';
+            referenceBtn.innerHTML = '⚠️ Download (Unsigned)';
+            referenceBtn.style.fontSize = '0.9em';
+            referenceBtn.title = 'This will fail on iOS 15+ due to signing requirements';
+            downloadSection.appendChild(referenceBtn);
+        }
+        referenceBtn.href = downloadUrl;
+        referenceBtn.download = filename;
         
         // Update instructions
         updateInstructions();
         
         showSection('download');
         
-        console.log('✅ Real .shortcut file generated successfully');
+        console.log('✅ Shortcut ready for manual creation');
         
     } catch (error) {
         console.error('❌ Failed to generate shortcut:', error);
         showError('Failed to generate shortcut. Please try again.');
+    }
+}
+
+// Copy deep link and show instructions
+function copyDeepLinkAndShowInstructions() {
+    const deepLink = `intentional://reflect?app=${currentAppConfig.key}`;
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(deepLink).then(() => {
+        // Show feedback
+        const button = document.getElementById('downloadLink');
+        const originalText = button.textContent;
+        button.textContent = '✅ Deep Link Copied!';
+        button.style.backgroundColor = '#10b981';
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.backgroundColor = '';
+        }, 2000);
+        
+        // Scroll to instructions
+        document.querySelector('.instructions').scrollIntoView({ behavior: 'smooth' });
+    }).catch(() => {
+        // Fallback for browsers that don't support clipboard API
+        alert(`Copy this deep link:\n\n${deepLink}`);
+    });
+}
+
+// Update instructions for the manual creation approach
+function updateInstructions() {
+    const instructionsElement = document.querySelector('.instructions ol');
+    const deepLink = `intentional://reflect?app=${currentAppConfig.key}`;
+    
+    if (instructionsElement) {
+        instructionsElement.innerHTML = `
+            <li><strong>📋 Copy Deep Link:</strong> Tap <strong>"Create Manually"</strong> above to copy the deep link</li>
+            <li><strong>🔨 Create Shortcut:</strong>
+                <ul>
+                    <li>Open the <strong>iOS Shortcuts app</strong></li>
+                    <li>Tap the <strong>"+"</strong> button (top right)</li>
+                    <li>Tap <strong>"Add Action"</strong></li>
+                    <li>Search for <strong>"Open URL"</strong> and select it</li>
+                    <li>Tap in the URL field and <strong>paste</strong> the copied link</li>
+                    <li>Tap <strong>"Next"</strong></li>
+                    <li>Name your shortcut: <strong>"${currentAppConfig.name}"</strong></li>
+                    <li>Tap <strong>"Done"</strong></li>
+                </ul>
+            </li>
+            <li><strong>🏠 Add to Home Screen:</strong>
+                <ul>
+                    <li>Find your new shortcut in the Shortcuts app</li>
+                    <li>Tap the <strong>⋯ (three dots)</strong> menu on the shortcut</li>
+                    <li>Select <strong>"Add to Home Screen"</strong></li>
+                    <li>Change the name to <strong>"${currentAppConfig.name}"</strong></li>
+                    <li>Tap the icon to choose one that looks like the original app</li>
+                    <li>Tap <strong>"Add"</strong> (top right)</li>
+                </ul>
+            </li>
+            <li><strong>🔄 Replace Original:</strong> Move the real ${currentAppConfig.name} app to a folder or App Library</li>
+            <li><strong>✅ Test:</strong> Tap your new shortcut to ensure it opens the Intentional app correctly</li>
+            <li><strong>ℹ️ Deep Link Reference:</strong> <code>${deepLink}</code></li>
+        `;
     }
 }
 
@@ -359,56 +438,29 @@ function convertToPlistXML(obj) {
     return xmlHeader + '\n' + convertValue(obj) + '\n' + xmlFooter;
 }
 
-// Update instructions for the new approach
-function updateInstructions() {
-    const instructionsElement = document.querySelector('.instructions ol');
-    const deepLink = `intentional://reflect?app=${currentAppConfig.key}`;
-    
-    if (instructionsElement) {
-        instructionsElement.innerHTML = `
-            <li><strong>Tap "Download .shortcut File"</strong> above to download the real iOS shortcut file</li>
-            <li><strong>Open the downloaded file</strong> - it will automatically open in the iOS Shortcuts app</li>
-            <li><strong>Tap "Add Shortcut"</strong> when prompted to install it</li>
-            <li><strong>Add to Home Screen:</strong>
-                <ul>
-                    <li>Find your new shortcut in the Shortcuts app</li>
-                    <li>Tap the <strong>⋯ (three dots)</strong> menu</li>
-                    <li>Select <strong>"Add to Home Screen"</strong></li>
-                    <li>Change the name to <strong>"${currentAppConfig.name}"</strong> (same as original app)</li>
-                    <li>Choose an icon that matches the original app</li>
-                    <li>Tap <strong>"Add"</strong></li>
-                </ul>
-            </li>
-            <li><strong>Hide the original app:</strong> Move it to a folder or App Library</li>
-            <li><strong>Test your shortcut:</strong> Tap it to make sure it opens the Intentional app!</li>
-            <li><strong>If it doesn't work:</strong> Make sure the Intentional app is installed and the URL scheme is correct: <code>${deepLink}</code></li>
-        `;
-    }
-}
-
-// Copy install link to clipboard
+// Copy install link to clipboard (now copies the deep link)
 async function copyInstallLink() {
     try {
-        // Get the deep link URL instead of the page URL
         const deepLinkURL = `intentional://reflect?app=${currentAppConfig.key}`;
         await navigator.clipboard.writeText(deepLinkURL);
         
         // Show feedback
-        const originalText = elements.copyLink.textContent;
-        elements.copyLink.textContent = '✅ Copied!';
-        elements.copyLink.style.background = '#48bb78';
+        const button = document.getElementById('copyLink');
+        const originalText = button.textContent;
+        button.textContent = '✅ Copied!';
+        button.style.backgroundColor = '#10b981';
         
         setTimeout(() => {
-            elements.copyLink.textContent = originalText;
-            elements.copyLink.style.background = '';
+            button.textContent = originalText;
+            button.style.backgroundColor = '';
         }, 2000);
         
+        console.log('✅ Deep link copied to clipboard:', deepLinkURL);
     } catch (error) {
-        console.error('Failed to copy to clipboard:', error);
-        
-        // Fallback: show the URL in an alert
+        console.error('❌ Failed to copy to clipboard:', error);
+        // Fallback for browsers that don't support clipboard API
         const deepLinkURL = `intentional://reflect?app=${currentAppConfig.key}`;
-        alert(`Copy this deep link:\n${deepLinkURL}`);
+        alert(`Copy this deep link:\n\n${deepLinkURL}`);
     }
 }
 
